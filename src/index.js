@@ -1,6 +1,6 @@
 import avatar from './images/avatar.jpg';
 import './pages/index.css';
-import { initialCards, createCard, } from './scripts/cards.js';
+import { initialCards, createCard } from './scripts/cards.js';
 import { togglePopup } from './scripts/modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,8 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const placesList = document.querySelector('.places__list');
     const formEditProfile = editPopup.querySelector('form');
     const formAddCard = document.querySelector('.popup__form[name="new-place"]');
+    const imagePopup = document.querySelector('.popup_type_image');
+    const popupImage = imagePopup.querySelector('.popup__image');
+    const popupCaption = imagePopup.querySelector('.popup__caption');
     const avatarImage = new Image();
-  
+
     function editProfile(e) { 
         e.preventDefault(); 
         const form = e.target
@@ -29,49 +32,62 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault(); 
         const name = event.target.elements['place-name'].value;
         const link = event.target.elements.link.value;
-        const cardElement = createCard(name, link);
+        const cardElement = createCard(name, link, handleDeleteButtonClick, toggleLike, openImagePopup);
         placesList.prepend(cardElement);
         event.target.reset();
         togglePopup(addPopup, false);
     }
 
-    openEditPopupButton.addEventListener('click', () => { 
-        togglePopup(editPopup, true)
-        const {name, description} = formEditProfile.elements
-        name.value = profileName.textContent
-        description.value = profileAbout.textContent
-    });
-    
-    closeButtons.forEach(button => { 
-        button.addEventListener('click', () => {
-            const popup = button.closest('.popup');
-            togglePopup(popup, false);
-        });
-    });
+    function EditButtonClick() {
+        togglePopup(editPopup, true);
+        const { name, description } = formEditProfile.elements;
+        name.value = profileName.textContent;
+        description.value = profileAbout.textContent;
+    }
 
-    document.addEventListener('click', (evt) => { 
+    function CloseButtonClick(event) {
+        const button = event.currentTarget; 
+        const popup = button.closest('.popup');
+        togglePopup(popup, false);
+    }   
+
+    function DocumentClick(evt) {
         if (evt.target.classList.contains('popup')) {
             togglePopup(evt.target, false);
         }
         if (evt.target.closest('.popup__content')) {
             evt.stopPropagation();
         }
+    }
+
+    function handleDeleteButtonClick(event) {
+        event.target.closest('.places__item').remove();
+    };
+  
+    function toggleLike(event) {
+        event.target.classList.toggle('card__like-button_is-active');
+    };
+
+    function openImagePopup(text, link) {
+        popupImage.src = link;
+        popupImage.alt = text;
+        popupCaption.textContent = text;
+        togglePopup(imagePopup, true);
+    }
+
+    closeButtons.forEach(button => {
+        button.addEventListener('click', CloseButtonClick);
     });
 
-    closeButtons.forEach(button => { 
-        button.addEventListener('click', () => {
-            const popup = button.closest('.popup');
-            togglePopup(popup, false);
-        });
-    });
-    
+    document.addEventListener('click', DocumentClick);
     openAddPopupButton.addEventListener('click', () => togglePopup(addPopup, true));
+    openEditPopupButton.addEventListener('click', EditButtonClick);
     formEditProfile.addEventListener('submit', editProfile);
     formAddCard.addEventListener('submit', addCard);
 
     // Init
     initialCards.forEach((cardData) => {
-        const cardElement = createCard(cardData.text, cardData.link);
+        const cardElement = createCard(cardData.text, cardData.link, handleDeleteButtonClick, toggleLike, openImagePopup);
         placesList.appendChild(cardElement);
     });
 

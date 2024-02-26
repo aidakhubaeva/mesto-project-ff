@@ -1,7 +1,3 @@
-const imagePopup = document.querySelector('.popup_type_image');
-const popupImage = imagePopup.querySelector('.popup__image');
-const popupCaption = imagePopup.querySelector('.popup__caption');
-
 export function togglePopup(popup, isOpen) {
     if (isOpen) {
         popup.classList.add('popup_is-opened');
@@ -21,12 +17,7 @@ export function handleEscClose(evt) { // определяет, была ли н�
     }
 }
 
-export function openImagePopup(text, link) {
-    popupImage.src = link;
-    popupImage.alt = text;
-    popupCaption.textContent = text;
-    togglePopup(imagePopup, true);
-}
+
 
 
 
