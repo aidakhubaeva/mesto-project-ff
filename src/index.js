@@ -38,20 +38,20 @@ document.addEventListener('DOMContentLoaded', () => {
         togglePopup(addPopup, false);
     }
 
-    function EditButtonClick() {
+    function editButtonClick() {
         togglePopup(editPopup, true);
         const { name, description } = formEditProfile.elements;
         name.value = profileName.textContent;
         description.value = profileAbout.textContent;
     }
 
-    function CloseButtonClick(event) {
+    function closeButtonClick(event) {
         const button = event.currentTarget; 
         const popup = button.closest('.popup');
         togglePopup(popup, false);
     }   
 
-    function DocumentClick(evt) {
+    function documentClick(evt) {
         if (evt.target.classList.contains('popup')) {
             togglePopup(evt.target, false);
         }
@@ -76,12 +76,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     closeButtons.forEach(button => {
-        button.addEventListener('click', CloseButtonClick);
+        button.addEventListener('click', closeButtonClick);
     });
 
-    document.addEventListener('click', DocumentClick);
+    document.addEventListener('click', documentClick);
     openAddPopupButton.addEventListener('click', () => togglePopup(addPopup, true));
-    openEditPopupButton.addEventListener('click', EditButtonClick);
+    openEditPopupButton.addEventListener('click', editButtonClick);
     formEditProfile.addEventListener('submit', editProfile);
     formAddCard.addEventListener('submit', addCard);
 
