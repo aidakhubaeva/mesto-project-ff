@@ -1,50 +1,37 @@
-const cardTemplate = document.querySelector('#card-template').content;
+export const cardTemplate = document.querySelector('#card-template').content;
 
 export const initialCards = [
-    {
-      name: "Архыз",
-      link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-      text: "Архыз",
-    },
-    {
-      name: "Челябинская область",
-      link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-      text: "Челябинская область",
-    },
-    {
-      name: "Иваново",
-      link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-      text: "Иваново",
-    },
-    {
-      name: "Камчатка",
-      link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-      text: "Камчатка",
-    },
-    {
-      name: "Холмогорский район",
-      link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-      text: "Холмогорский район",
-    },
-    {
-      name: "Байкал",
-      link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-      text: "Байкал",
-    }
 
 ];
 
-export function createCard(text, link, handleDeleteButtonClick, toggleLike, openImagePopup) {
+export function createCard(text, link, likes, cardId, _id, currentUserId, handleDeleteButtonClick, toggleLike, openImagePopup) {
   const cardElement = cardTemplate.cloneNode(true);
+  const cardItemElement = cardElement.querySelector('.places__item');
+  cardItemElement.setAttribute('data-card-id', cardId);
   const imageElement = cardElement.querySelector('.card__image');
+  const likeCountElement = cardElement.querySelector('.card__like-count');
+  const likeButton = cardElement.querySelector('.card__like-button');
+  const deleteButton = cardElement.querySelector('.card__delete-button');
+  console.log(_id, currentUserId)
+  if (_id === currentUserId) { 
+    deleteButton.classList.add('card__delete-button_visible');
+    deleteButton.addEventListener('click', handleDeleteButtonClick);
+  } else {
+    deleteButton.style.display = 'none';
+  }
+  
   imageElement.src = link;
   imageElement.alt = text;
+  likeCountElement.textContent = likes.length;
+
+  const isLiked = likes.some(user => user._id === currentUserId);
+  if (isLiked) {
+    likeButton.classList.add('card__like-button_is-active');
+  }
+  
   cardElement.querySelector('.card__title').textContent = text;
-  cardElement.querySelector('.card__delete-button').addEventListener('click', handleDeleteButtonClick);
-  cardElement.querySelector('.card__like-button').addEventListener('click', toggleLike);
-  imageElement.addEventListener('click', () => {
-      openImagePopup(text, link);
-  });
+  likeButton.addEventListener('click', toggleLike);
+  imageElement.addEventListener('click', () => openImagePopup(text, link));
   return cardElement;
 };
 

@@ -4,3 +4,62 @@
   object-fit: cover;
   display: block;
 }
+
+.popup__content-avatar {
+  background-color: #fff;
+  border-radius: 10px;
+  box-sizing: border-box;
+  max-width: 430px;
+  padding: 34px 36px;
+  position: relative;
+  width: 100%;
+}
+
+.popup:hover {
+  background-color: rgba(0, 0, 0, .5);
+}
+
+.avatar__edit {
+  display: grid;
+  justify-items: center
+}
+
+.avatar__edit-button {
+  align-self: center;
+  margin: 0 29px 0 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border: none;
+  display: grid;
+  justify-items: center;
+  background: transparent url(/src/images/edit-icon.svg) 50% no-repeat;
+  background-size: 26px 26px;
+  cursor: pointer;
+  grid-area: button;
+  height: 24px;
+  transition: .3s;
+  width: 24px;
+  z-index: 3;
+  position: absolute;
+}
+
+.avatar__edit-button:hover {
+  opacity: .6;
+}
+
+.profile__image::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.3s ease;
+}
+
+.avatar__edit:hover .avatar__edit-button {
+  opacity: 1;
+}
+
+.avatar__edit:hover .profile__image::after {
+  background: rgba(0, 0, 0, 0.5);
+}

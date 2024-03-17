@@ -6,12 +6,27 @@
   font-size: 14px;
   line-height: 18px;
   box-sizing: border-box;
-  padding: 10px 0 0;
-  margin-bottom: 10px;
+  padding: 13px 0 0;
+  margin-bottom: 7px;
 }
 
-.popup__input:last-of-type {
-  margin-bottom: 0;
+.popup__input::placeholder {
+  color: #C4C4C4;
+}
+
+.popup__input-error {
+  color: #FF0000;
+  font-size: 12px;
+  display: block;
+}
+
+.popup__input_type_error {
+  border-bottom: 1px solid #FF0000;
+}
+
+.popup__input:focus {
+  outline: none;
+  outline: 2px solid rgb(51, 128, 229);
 }
 
 @media screen and (max-width: 568px) {

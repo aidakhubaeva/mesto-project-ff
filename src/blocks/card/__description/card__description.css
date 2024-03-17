@@ -1,5 +1,7 @@
 .card__description {
-  display: flex;
+  display: grid;
+  grid-template-columns: 80% auto;
+  grid-template-rows: auto auto;
   justify-content: space-between;
   align-items: center;
   background: #fff;

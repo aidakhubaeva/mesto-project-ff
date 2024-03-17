@@ -2,7 +2,6 @@
   width: 21px;
   height: 18px;
   background: transparent url('../../../images/like-inactive.svg') no-repeat;
-  
   background-size: 21px 18px;
   border: none;
   cursor: pointer;
@@ -13,8 +12,21 @@
   -ms-transition: 0.3s;
   -o-transition: 0.3s;
   transition: 0.3s;
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
 }
 
 .card__like-button:hover {
   opacity: 0.6;
+}
+
+.card__like-count {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  margin-top: 6px;
+  justify-self: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 1);
+  line-height: 15.73px;
 }
