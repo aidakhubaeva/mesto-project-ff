@@ -5,7 +5,6 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-
 export function setUserInfo(username, about) {
   return fetch(`${baseUrl}/users/me`, {
     method: "PATCH",
@@ -18,7 +17,6 @@ export function getUserData() {
   return fetch(`${baseUrl}/users/me`, { headers })
     .then((res) => (res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)));
 }
-
 
 export function setUserAvatar(avatarUrl) {
   return fetch(`${baseUrl}/users/me/avatar`, {
@@ -35,15 +33,12 @@ export function getInitialCards() {
     .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`));
 }
 
-
 export function deleteCardFromServer(_id) {
   const token = localStorage.getItem('token'); 
-  console.log(_id);
   return fetch(`${baseUrl}/cards/${_id}`, {
     method: "DELETE",
     headers
   }).then(res => {
-    console.log('Ответ сервера:', res); 
     if (!res.ok) {
       return Promise.reject(`Ошибка: ${res.status}`);
     }
@@ -64,7 +59,6 @@ export function createCardOnServer(name, link) {
 }
 
 export function dislikeCard(_id) {
-  console.log(_id);
   return fetch(`${baseUrl}/cards/likes/${_id}`, {
     method: "DELETE",
     headers,
@@ -72,8 +66,6 @@ export function dislikeCard(_id) {
 }
 
 export function likeCard(_id) {
-
-  console.log(_id);
   return fetch(`${baseUrl}/cards/likes/${_id}`, {
     method: "PUT",
     headers: headers
