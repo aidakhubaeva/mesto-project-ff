@@ -20,17 +20,10 @@
 }
 
 .popup__button:disabled {
-  background: #000;
-  /* или любой другой цвет, который вы используете для активной кнопки */
-  color: white;
-  /* если вы хотите, чтобы текст оставался белым */
-  border: none;
-  /* если границы нет */
+  background: transparent;
+  color: rgba(0, 0, 0, .2);
+  border: 1px solid rgba(0, 0, 0, .2);
   cursor: default;
-  /* background: transparent;
-  color: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  cursor: default; */
 }
 
 .popup__button:not(:disabled):hover {

@@ -6,24 +6,24 @@ export function createCard(card, userId, currentUserId, handleDeleteButtonClick,
   const cardElement = cardTemplate.cloneNode(true);
 
   const imageElement = cardElement.querySelector('.card__image');
-  imageElement.src = link;
-  imageElement.alt = name;
+        imageElement.src = link;
+        imageElement.alt = name;
 
   const likeCountElement = cardElement.querySelector('.card__like-count');
-  likeCountElement.textContent = likes.length;
+        likeCountElement.textContent = likes.length;
 
   const likeButton = cardElement.querySelector('.card__like-button');
   const isLiked = likes.some(user => user._id === currentUserId);
-  if (isLiked) {
-    likeButton.classList.add('card__like-button_is-active');
+    if (isLiked) {
+      likeButton.classList.add('card__like-button_is-active');
   }
 
   const deleteButton = cardElement.querySelector('.card__delete-button');
-  if (userId === currentUserId) {
-    deleteButton.addEventListener('click', (event) => handleDeleteButtonClick(event, _id));
-    deleteButton.classList.add('card__delete-button_visible');
-  } else {
-    deleteButton.style.display = 'none';
+    if (userId === currentUserId) {
+      deleteButton.addEventListener('click', (event) => handleDeleteButtonClick(event, _id));
+      deleteButton.classList.add('card__delete-button_visible');
+    } else {
+      deleteButton.style.display = 'none';
   }
   
   cardElement.querySelector('.card__title').textContent = name;
@@ -32,6 +32,7 @@ export function createCard(card, userId, currentUserId, handleDeleteButtonClick,
 
   return cardElement;
 };
+
 
 export function toggleLike(likeButton, likeCounter, cardId) {
   const isLiked = likeButton.classList.contains('card__like-button_is-active');
@@ -45,6 +46,7 @@ export function toggleLike(likeButton, likeCounter, cardId) {
       console.error("Ошибка при изменении статуса лайка:", error);
     });
 }
+
 
 export function handleDeleteButtonClick(event, _id) {
   const cardElement = event.target.closest('.places__item');

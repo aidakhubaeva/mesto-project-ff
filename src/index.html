@@ -7,7 +7,6 @@
     content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Mesto</title>
-  <!-- <link rel="stylesheet" href="./pages/index.css"> -->
 </head>
 
 <body class="page">
@@ -39,7 +38,7 @@
         © 2021 Mesto Russia
       </p>
     </footer>
-    <!-- ред профиля -->
+
     <div class="popup popup_type_edit">
       <div class="popup__content">
         <button type="button" class="popup__close"></button>
@@ -56,7 +55,6 @@
         </form>
       </div>
     </div>
-    <!-- ред аватарки -->
     <div class="popup popup_type_edit_avatar">
       <div class="popup__content-avatar">
         <button type="button" class="popup__close"></button>
@@ -69,12 +67,10 @@
         </form>
       </div>
     </div>
-    <!-- добавление карточки -->
     <div class="popup popup_type_new-card">
       <div class="popup__content">
         <button type="button" class="popup__close"></button>
         <h3 class="popup__title">Новое место</h3>
-
         <form class="popup__form" name="new-place">
           <input type="text" name="place-name" class="popup__input popup__input_type_card-name" placeholder="Название"
             required pattern="^[a-zA-Zа-яА-Я\s]+$" minlength="2" maxlength="40">
@@ -86,8 +82,6 @@
         </form>
       </div>
     </div>
-
-
     <div class="popup popup_type_image">
       <div class="popup__content popup__content_content_image">
         <button type="button" class="popup__close"></button>
@@ -95,12 +89,10 @@
         <p class="popup__caption"></p>
       </div>
     </div>
-
     <template id="card-template">
       <li class="places__item card">
         <img class="card__image" src="" alt="" />
         <button type="button" class="card__delete-button"></button>
-
         <div class="card__description">
           <h2 class="card__title">
           </h2>

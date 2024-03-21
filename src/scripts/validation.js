@@ -47,7 +47,16 @@ export function isValid(input, settings, form) {
       hideInputError(input, form.querySelector(`#${input.name}-error`), settings);
     });
     
-    disableButton(button, settings);
+    toggleButtonState(inputs, button, settings)
+  }
+
+  export function toggleButtonState(inputs, button, settings) {
+    const hasInvalidInput = inputs.some((input) => !input.validity.valid);
+    if (hasInvalidInput) {
+      disableButton(button, settings);
+    } else {
+      enableButton(button, settings);
+    }
   }
 
   function setEventListeners(form, settings) {
@@ -65,12 +74,7 @@ export function isValid(input, settings, form) {
       });
     });
 
-    const hasInvalidInput = inputs.some((input) => !input.validity.valid);
-    if (hasInvalidInput) {
-      disableButton(button, settings);
-    } else {
-      enableButton(button, settings);
-    }
+    toggleButtonState(inputs, button, settings)
   }
   
   export function enableValidation(settings) {

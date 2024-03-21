@@ -2,10 +2,8 @@
 import './pages/index.css';
 import { createCard, toggleLike, handleDeleteButtonClick } from './scripts/card.js';
 import { setUserInfo, getUserData, setUserAvatar, getInitialCards, createCardOnServer} from './scripts/api.js';
-
-import { enableValidation, clearValidation, disableButton, enableButton } from './scripts/validation.js';
+import { enableValidation, clearValidation, disableButton } from './scripts/validation.js';
 import { openPopup, closePopup, closePopupByOverlay } from './scripts/modal.js';
-
 
   const editPopup = document.querySelector('.popup_type_edit');
   const addPopup = document.querySelector('.popup_type_new-card');
@@ -38,10 +36,8 @@ import { openPopup, closePopup, closePopupByOverlay } from './scripts/modal.js';
 
   enableValidation(validationConfig);
 
-
   avatarForm.addEventListener('submit', function(event) {
     event.preventDefault();
-
     const originalButtonText = submitButton.textContent;
     submitButton.textContent = 'Сохранение...';
 
@@ -50,6 +46,8 @@ import { openPopup, closePopup, closePopupByOverlay } from './scripts/modal.js';
       .then((responseData) => {
         profileImage.style.backgroundImage = `url('${responseData.avatar}')`; 
         closePopup(editAvatarPopup);
+        avatarForm.reset()
+        disableButton(submitButton, validationConfig)
       })
       .catch((error) => {
         console.error("Ошибка при обновлении аватара:", error);
@@ -58,7 +56,6 @@ import { openPopup, closePopup, closePopupByOverlay } from './scripts/modal.js';
         submitButton.textContent = originalButtonText;
       });
   });
-
 
   function editProfile(e) {
     e.preventDefault();
@@ -73,6 +70,7 @@ import { openPopup, closePopup, closePopupByOverlay } from './scripts/modal.js';
         profileName.textContent = updatedUserData.name;
         profileAbout.textContent = updatedUserData.about;
         closePopup(editPopup);
+        disableButton(submitButton, validationConfig)
       })
       .catch((error) => {
         console.error("Ошибка обновления профиля:", error);
@@ -82,115 +80,106 @@ import { openPopup, closePopup, closePopupByOverlay } from './scripts/modal.js';
       });
     };
 
-
-      function addCard(event) { 
-        event.preventDefault(); 
-        const form = event.target;
-        const submitButton = form.querySelector('.popup__button');
-        const originalButtonText = submitButton.textContent;
-        submitButton.textContent = 'Добавление...';
-        const name = form.elements['place-name'].value;
-        const link = form.elements.link.value;
-        
-        createCardOnServer(name, link)
-          .then((newCard) => {
-            const cardElement = createCard(newCard, user.id, newCard.owner._id, handleDeleteButtonClick, toggleLike, openImagePopup);
-            placesList.prepend(cardElement);
-            form.reset();
-            closePopup(addPopup, false);
-          })
+    function addCard(event) { 
+      event.preventDefault(); 
+      const submitButton = formAddCard.querySelector('.popup__button');
+      const originalButtonText = submitButton.textContent;
+      submitButton.textContent = 'Добавление...';
+      const name = formAddCard.elements['place-name'].value;
+      const link = formAddCard.elements.link.value;
+      
+      createCardOnServer(name, link)
+        .then((newCard) => {
+          const cardElement = createCard(newCard, user.id, newCard.owner._id, handleDeleteButtonClick, toggleLike, openImagePopup);
+          placesList.prepend(cardElement);
+          formAddCard.reset();
+          closePopup(addPopup);
+          disableButton(submitButton, validationConfig)
+        })
           .catch((error) => {
             console.error("Ошибка при добавлении карточки:", error);
           })
           .finally(() => {
               submitButton.textContent = originalButtonText;
             });
-          };
-
+        };
 
     function setupAvatarEditButton() {
       const editButton = document.querySelector('.avatar__edit-button');
-  
-     function openEditAvatarPopup() {
-       openPopup(editAvatarPopup);
-     }
-     
+         function openEditAvatarPopup() {
+             openPopup(editAvatarPopup);
+        }
      editButton.addEventListener('click', openEditAvatarPopup);
   }
 
 setupAvatarEditButton(); 
 
+    function editButtonClick() {
+      const { name, description } = formEditProfile.elements;
+      name.value = profileName.textContent;
+      description.value = profileAbout.textContent;
 
-function editButtonClick() {
-  const { name, description } = formEditProfile.elements;
-  name.value = profileName.textContent;
-  description.value = profileAbout.textContent;
-
-  clearValidation(formEditProfile, validationConfig);
-
-  openPopup(editPopup);
-}
-
-formAddCard.addEventListener('submit', addCard);
-
-function closeButtonClick(event) {
-  const button = event.currentTarget; 
-  const popup = button.closest('.popup');
-  closePopup(popup);
-}
-
-function openImagePopup(text, link) {
-  popupImage.src = link;
-  popupImage.alt = text;
-  popupCaption.textContent = text;
-  openPopup(imagePopup);
-}
-
-openEditPopupButton.addEventListener('click', editButtonClick);
-
-popups.forEach(popup => {
-  popup.addEventListener('click', event => {
-    if (event.target === event.currentTarget) {
-      closePopup(popup);
+      clearValidation(formEditProfile, validationConfig);
+      openPopup(editPopup);
     }
-  });
-});
 
+    formAddCard.addEventListener('submit', addCard);
+
+    function openImagePopup(text, link) {
+      popupImage.src = link;
+      popupImage.alt = text;
+      popupCaption.textContent = text;
+      openPopup(imagePopup);
+    }
+
+    function closeButtonClick(event) {
+      const button = event.currentTarget; 
+      const popup = button.closest('.popup');
+      closePopup(popup); 
+    }
+
+    closeButtons.forEach(button => {
+      button.addEventListener('click', closeButtonClick);
+    });
+
+    popups.forEach(popup => {
+      popup.addEventListener('click', event => {
+        if (event.target === event.currentTarget) {
+          closePopupByOverlay(event); 
+        }
+      });
+    });
+
+  openEditPopupButton.addEventListener('click', editButtonClick);
   formEditProfile.addEventListener('submit', editProfile);
-
   openAddPopupButton.addEventListener('click', () => {
-    clearValidation(formAddCard, validationConfig, getUserData);
     openPopup(addPopup, true);
   });
-  closeButtons.forEach(button => {
-      button.addEventListener('click', closeButtonClick);
-  });
 
-    // Init
   init();
 
   function init() {
     Promise.all([getUserData(), getInitialCards()])
-    .then(([userData, initialCards]) => {
-      user.id = userData._id
-      profileName.textContent = userData.name;
-      profileAbout.textContent = userData.about;
-      document.querySelector('.profile__image').style.backgroundImage = `url('${userData.avatar}')`;
-      const currentUserId = userData._id; 
+      .then(([userData, initialCards]) => {
+        user.id = userData._id
+        profileName.textContent = userData.name;
+        profileAbout.textContent = userData.about;
+        document.querySelector('.profile__image').style.backgroundImage = `url('${userData.avatar}')`;
+        const currentUserId = userData._id; 
 
-       initialCards.forEach((card) => {
-          const cardElement = createCard(
-            card,
-            card.owner._id,
-            currentUserId,
-            handleDeleteButtonClick, 
-            toggleLike, 
-            openImagePopup
-          );
-          placesList.appendChild(cardElement);
-        });
-      })
-      .catch((error) => {
-        console.error("Ошибка при получении данных:", error);
+        initialCards.forEach((card) => {
+            const cardElement = createCard(
+              card,
+              card.owner._id,
+              currentUserId,
+              handleDeleteButtonClick, 
+              toggleLike, 
+              openImagePopup
+            );
+            placesList.appendChild(cardElement);
+          });
+        })
+        .catch((error) => {
+          console.error("Ошибка при получении данных:", error);
       });
   }
